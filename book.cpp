@@ -4,11 +4,11 @@
 #include "book.h"
 
 // Default constructor
-Book::Book() : title(""), author(""), isbn(""){}
+Book::Book() : title(""), author(""), isbn(""), isAvailable(true){}
 
 // Parameterized constructor
 Book::Book(const string& title, const string& author, const string& isbn)
-    : title(title), author(author), isbn(isbn){}
+    : title(title), author(author), isbn(isbn), isAvailable(true){}
 
 // Getters
 string Book::getTitle() const { return title; }
@@ -52,9 +52,9 @@ string Book::toString() const{
 string Book::toFileFormat() const{
     string result =  title + "|" + author + "|" + isbn + "|";
     if (isAvailable){
-        result += isAvailable;
+        result += "1|";
     } else {
-        result += isAvailable + "|" + borrowerId;
+        result += "0|" + borrowerId;
     }
     return result;
 }

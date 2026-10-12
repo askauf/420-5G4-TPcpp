@@ -23,3 +23,5 @@ Antoine Dubois|USR022|
 Nathalie Guerin|USR023|
 Olivier Masson|USR024|
 Valérie Simon|USR025|
+Anne-Sophie Kauffmann|USR26|
+Thomas Piquet|USR27|

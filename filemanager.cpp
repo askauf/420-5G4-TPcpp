@@ -23,6 +23,11 @@ bool FileManager::loadLibraryData(Library& library) {
 
 // Save books to file
 bool FileManager::saveBooksToFile(Library& library) {
+    if (booksFileName.empty()){
+        cout << "Erreur : Aucun répertoire spécifique trouvé. Sauvegarde des livres ignorée.\n";
+        return false;
+    }
+
     ofstream file(booksFileName);
     if (!file.is_open()) {
         cout << "Erreur : Impossible d'ouvrir " << booksFileName << " en écriture.\n";
@@ -40,6 +45,11 @@ bool FileManager::saveBooksToFile(Library& library) {
 
 // Save users to file
 bool FileManager::saveUsersToFile(Library& library) {
+    if (usersFileName.empty()){
+        cout << "Erreur : Aucun répertoire spécifique trouvé. Sauvegarde des utilisateurs ignorée.\n";
+        return false;
+    }
+
     ofstream file(usersFileName);
     if (!file.is_open()) {
         cout << "Erreur : Impossible d'ouvrir " << usersFileName << " en écriture.\n";
@@ -111,6 +121,10 @@ bool FileManager::fileExists(const string& filename) {
 
 // Create backup
 void FileManager::createBackup() {
+    if (booksFileName.empty() || usersFileName.empty()){
+        cout << "Erreur : Chemin non-défini. Impossible de créer une sauvegarde.\n";
+    }
+
     if (fileExists(booksFileName)) {
         filesystem::copy_file(booksFileName, booksFileName + ".backup");
     }

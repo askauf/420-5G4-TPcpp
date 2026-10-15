@@ -1,13 +1,17 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+#include <ctime>
+
 #include "filemanager.h"
 
 using namespace std;
 
 // Constructor
 FileManager::FileManager(const string& booksFile, const string& usersFile)
-    : booksFileName(booksFile), usersFileName(usersFile) {}
+    : booksFileName(booksFile), usersFileName(usersFile) {
+        logsFileName = (filesystem::path(booksFile).parent_path()/"logs.log").string();
+    }
 
 // Save all library data
 bool FileManager::saveLibraryData(Library& library) {
@@ -134,4 +138,24 @@ void FileManager::createBackup() {
     }
     
     cout << "Fichiers de sauvegarde créés.\n";
+}
+
+// https://www.geeksforgeeks.org/cpp/logging-system-in-cpp/
+// https://github.com/Ahmed-Ibrahim-30/Logging-System
+// https://en.cppreference.com/cpp/chrono/c/localtime
+// https://en.cppreference.com/cpp/chrono/c/strftime
+// https://en.cppreference.com/cpp/chrono/c/time
+void FileManager::writeLog(string& action, string& details){
+    ofstream saveFile(logsFileName, ios::app);
+
+    if (saveFile.is_open()){
+        time_t now=time(nullptr);
+        char timeStamp[25];
+        strftime(timeStamp, sizeof(timeStamp), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+        saveFile << timeStamp << " - [" << action << "] " << details << endl;
+        saveFile.close();
+    } else {
+        cout << "Erreur : Impossible d'afficher le contenu " << logsFileName << "\n.";
+    }
 }

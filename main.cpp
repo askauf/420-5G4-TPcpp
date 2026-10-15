@@ -26,14 +26,15 @@ void displayMenu() {
     cout << "4.  Rechercher des Livres par Auteur\n";
     cout << "5.  Afficher Tous les Livres\n";
     cout << "6.  Afficher Tous les Livres (trié par titre)\n";
-    cout << "7.  Afficher les Livres Disponibles\n";
-    cout << "8.  Ajouter un Utilisateur\n";
-    cout << "9.  Afficher Tous les Utilisateurs\n";
-    cout << "10. Emprunter un Livre\n";
-    cout << "11. Retourner un Livre\n";
-    cout << "12. Statistiques de la Bibliothèque\n";
-    cout << "13. Sauvegarder les Données\n";
-    cout << "14. Créer une Sauvegarde\n";
+    cout << "7.  Afficher Tous les Livres (trié par auteur)\n";
+    cout << "8.  Afficher les Livres Disponibles\n";
+    cout << "9.  Ajouter un Utilisateur\n";
+    cout << "10. Afficher Tous les Utilisateurs\n";
+    cout << "11. Emprunter un Livre\n";
+    cout << "12. Retourner un Livre\n";
+    cout << "13. Statistiques de la Bibliothèque\n";
+    cout << "14. Sauvegarder les Données\n";
+    cout << "15. Créer une Sauvegarde\n";
     cout << "0.  Quitter\n";
     cout << "======================================================\n";
     cout << "Entrez votre choix : ";
@@ -177,13 +178,18 @@ int main(int argc, char* argv[]) {
                 library.displayAllBooksSortedByTitle();
                 pauseForInput();
                 break;
+
+            case 7: // Display All Books Sorted By Author
+                library.displayAllBooksSortedByAuthor();
+                pauseForInput();
+                break;
             
-            case 7: // Display Available Books
+            case 8: // Display Available Books
                 library.displayAvailableBooks();
                 pauseForInput();
                 break;
 
-            case 8: { // Add User
+            case 9: { // Add User
                 string name = getInput("Entrez le nom de l'utilisateur : ");
 
                 User newUser(name, "");
@@ -194,12 +200,12 @@ int main(int argc, char* argv[]) {
                 break;
             }
             
-            case 9: // Display All Users
+            case 10: // Display All Users
                 library.displayAllUsers();
                 pauseForInput();
                 break;
             
-            case 10: { // Check Out Book
+            case 11: { // Check Out Book
                 string isbn = getInput("Entrez l'ISBN du livre à emprunter : ");
                 string userId = getInput("Entrez l'ID de l'utilisateur : ");
                 
@@ -212,7 +218,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             
-            case 11: { // Return Book
+            case 12: { // Return Book
                 string isbn = getInput("Entrez l'ISBN du livre à retourner : ");
                 
                 if (library.returnBook(isbn)) {
@@ -224,7 +230,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             
-            case 12: { // Library Statistics
+            case 13: { // Library Statistics
                 cout << "\n=== STATISTIQUES DE LA BIBLIOTHÈQUE ===\n";
                 cout << "Total des Livres : " << library.getTotalBooks() << "\n";
                 cout << "Livres Disponibles : " << library.getAvailableBookCount() << "\n";
@@ -234,7 +240,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             
-            case 13: { // Save Data
+            case 14: { // Save Data
                 if (fileManager.saveLibraryData(library)) {
                     cout << "Données de la bibliothèque sauvegardées avec succès !\n";
                 } else {
@@ -244,7 +250,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             
-            case 14: { // Create Backup
+            case 15: { // Create Backup
                 fileManager.createBackup();
                 pauseForInput();
                 break;

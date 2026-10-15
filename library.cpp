@@ -198,6 +198,37 @@ void Library::displayAllBooksSortedByTitle(){
     }
 }
 
+// Get all books sorted by author (accent not taken in account)
+// https://github.com/T-Piquet/420-5G4/blob/main/content/cours/Cplusplus/Exercices/tri/tri.cpp
+void Library::displayAllBooksSortedByAuthor(){
+    vector<Book*> allBooksSortedByAuthor = getAllBooks();
+    size_t taille = allBooksSortedByAuthor.size();
+
+    for (size_t i = 0; i < taille - 1; ++i) {
+        size_t indexMinimum = i;
+        for (size_t j = i + 1; j < taille; ++j) {
+            if (allBooksSortedByAuthor[j]->getAuthor() < allBooksSortedByAuthor[indexMinimum]->getAuthor()) {
+                indexMinimum = j;
+            }
+        }
+        if (indexMinimum != i) {
+            swap(allBooksSortedByAuthor[i], allBooksSortedByAuthor[indexMinimum]);
+        }
+    }
+
+    if (allBooksSortedByAuthor.empty()) {
+        cout << "Aucun livre dans la bibliothèque.\n";
+        return;
+    }
+    
+    cout << "\n=== TOUS LES LIVRES TRIÉS PAR AUTEUR ===\n";
+    for (size_t i = 0; i < allBooksSortedByAuthor.size(); ++i) {
+        cout << "\nLivre " << (i + 1) << " :\n";
+        cout << allBooksSortedByAuthor[i]->toString() << "\n";
+        cout << "-------------------------\n";
+    }
+}
+
 // Display available books
 void Library::displayAvailableBooks() {
     auto available = getAvailableBooks();

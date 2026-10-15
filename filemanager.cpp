@@ -145,6 +145,8 @@ void FileManager::createBackup() {
 // https://en.cppreference.com/cpp/chrono/c/localtime
 // https://en.cppreference.com/cpp/chrono/c/strftime
 // https://en.cppreference.com/cpp/chrono/c/time
+
+// Write logs for timestamp/action/details
 void FileManager::writeLog(string& action, string& details){
     ofstream saveFile(logsFileName, ios::app);
 

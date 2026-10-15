@@ -16,11 +16,32 @@ Pour ca il suffit de donner chemin vers le repertoire data avec l'application `b
 
 # Veille technologique
 ## Les fonctionnalités implémentées
-Les fonctionnalités que j'ai choisi d'implémenter sont la numérotation automatique des ID utilisateurs (Interface et Expérience Utilisateur [Au choix]), (Gestion des Données [Au choix]), la création si non-existant et la conservation au fur et à mesure des sessions (Journal d'activités [Obligatoire]) et la correction de l'échec de sauvegarde sans message explicite lorsque le chemin n'est pas mentionné (Correction du bug [Obligatoire]).
+Les fonctionnalités que j'ai choisi d'implémenter sont la numérotation automatique des ID utilisateurs (Interface et Expérience Utilisateur [Au choix]), le tri des résultats par titre, auteur pour l’affichage (Gestion des Données [Au choix]), la création si non-existant et la conservation au fur et à mesure des sessions (Journal d'activités [Obligatoire]) et la correction de l'échec de sauvegarde sans message explicite lorsque le chemin n'est pas mentionné (Correction du bug [Obligatoire]).
 
 ### Question 1 : C++
 Expliquez en détails une fonctionnalité / notion dans le code que ne nous avons pas ou peu vu en cours. Montrez ici l’exemple sorti du code du projet.
-> Réponse
+> Une des fonctionnalité / notion dans le code que nous n'avons pas ou peu vu en cours consistait à l'intégration de la journalisation d'activités pour l'ajout, le retrait, l'emprunt et le retour d'un livre. L'utilisation des fonctions <ctime> pour la récuppération du temps et l'enregistrement dans un fichier log afin de dater chaque action relié aux acitivités des livres sans en écraser le contenu.
+
+```
+// CODE
+void FileManager::writeLog(string& action, string& details){
+    ofstream saveFile(logsFileName, ios::app);
+
+    if (saveFile.is_open()){
+        time_t now=time(nullptr);
+        char timeStamp[25];
+        strftime(timeStamp, sizeof(timeStamp), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+        saveFile << timeStamp << " - [" << action << "] " << details << endl;
+        saveFile.close();
+    } else {
+        cout << "Erreur : Impossible d'afficher le contenu " << logsFileName << "\n.";
+    }
+}
+
+// RÉSULTATS
+2026-10-15 03:51:07 - [EMPRUNT LIVRE] Les Contemplations|Victor Hugo|9782070380932|Anne-Sophie Kauffmann|
+```
 
 ### Question 2 : Options de développement possible
 Proposez une solution plus adaptée pour la gestion de bibliothèque et faisant appel éventuellement à une technologie autre que le C++, et expliquez comment vous interfaceriez ça avec le C++. Quelle solution technologique utiliseriez vous ? Pensez au futur de cette bibliothèque à Alexandrie qui pourrait éventuellement contenir des millions de livres.

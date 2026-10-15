@@ -30,7 +30,7 @@ François le Champi|George Sand|9782253005094|1|
 La Petite Fadette|George Sand|9782253005101|0|USR011
 Consuelo|George Sand|9782253005118|1|
 Le Meunier d'Angibault|George Sand|9782253005125|1|
-Les Contemplations|Victor Hugo|9782070380932|0|USR012
+Les Contemplations|Victor Hugo|9782070380932|1|
 La Légende des siècles|Victor Hugo|9782070380949|1|
 Les Châtiments|Victor Hugo|9782070380956|1|
 L'Art poétique|Nicolas Boileau|9782070380963|0|USR013

@@ -213,7 +213,7 @@ int main(int argc, char* argv[]) {
                 library.displayAllUsers();
                 pauseForInput();
                 break;
-            
+             
             case 11: { // Check Out Book
                 string isbn = getInput("Entrez l'ISBN du livre à emprunter : ");
                 string userId = getInput("Entrez l'ID de l'utilisateur : ");

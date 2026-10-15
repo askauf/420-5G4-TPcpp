@@ -20,7 +20,7 @@ Les fonctionnalités que j'ai choisi d'implémenter sont la numérotation automa
 
 ### Question 1 : C++
 Expliquez en détails une fonctionnalité / notion dans le code que ne nous avons pas ou peu vu en cours. Montrez ici l’exemple sorti du code du projet.
-> Une des fonctionnalité / notion dans le code que nous n'avons pas ou peu vu en cours consistait à l'intégration de la journalisation d'activités pour l'ajout, le retrait, l'emprunt et le retour d'un livre. L'utilisation des fonctions <ctime> pour la récuppération du temps et l'enregistrement dans un fichier log afin de dater chaque action relié aux acitivités des livres sans en écraser le contenu.
+> Une des fonctionnalité / notion dans le code que nous n'avons pas ou peu vu en cours consistait à l'intégration de la journalisation d'activités pour l'ajout, le retrait, l'emprunt et le retour d'un livre par un système de logs utilisant <fstream> et <ctime>. En combinant les fonctions de temps (time, localtime, strtfime), on génère un format date-heure (YYYY/MM/DD HH:MM:SS) pour chaque action pour ensuite l'écrire par le mode "iso::app" dans un fichier sans en y écraser le contenu tout en vérifiant que le fichier s'ouvre proprement, un fichier qu'on créer si non-existant.
 
 ```
 // CODE

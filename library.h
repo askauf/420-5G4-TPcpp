@@ -39,6 +39,7 @@ public:
     
     // Display methods
     void displayAllBooks();
+    void displayAllBooksSortedByTitle();
     void displayAvailableBooks();
     void displayAllUsers();
     

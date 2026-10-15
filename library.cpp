@@ -167,6 +167,37 @@ void Library::displayAllBooks() {
     }
 }
 
+// Get all books sorted by title (accent not taken in account)
+// https://github.com/T-Piquet/420-5G4/blob/main/content/cours/Cplusplus/Exercices/tri/tri.cpp
+void Library::displayAllBooksSortedByTitle(){
+    vector<Book*> allBooksSortedByTitle = getAllBooks();
+    size_t taille = allBooksSortedByTitle.size();
+
+    for (size_t i = 0; i < taille - 1; ++i) {
+        size_t indexMinimum = i;
+        for (size_t j = i + 1; j < taille; ++j) {
+            if (allBooksSortedByTitle[j]->getTitle() < allBooksSortedByTitle[indexMinimum]->getTitle()) {
+                indexMinimum = j;
+            }
+        }
+        if (indexMinimum != i) {
+            swap(allBooksSortedByTitle[i], allBooksSortedByTitle[indexMinimum]);
+        }
+    }
+
+    if (allBooksSortedByTitle.empty()) {
+        cout << "Aucun livre dans la bibliothèque.\n";
+        return;
+    }
+    
+    cout << "\n=== TOUS LES LIVRES TRIÉS PAR TITRE ===\n";
+    for (size_t i = 0; i < allBooksSortedByTitle.size(); ++i) {
+        cout << "\nLivre " << (i + 1) << " :\n";
+        cout << allBooksSortedByTitle[i]->toString() << "\n";
+        cout << "-------------------------\n";
+    }
+}
+
 // Display available books
 void Library::displayAvailableBooks() {
     auto available = getAvailableBooks();

@@ -1,0 +1,163 @@
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+#include <ctime>
+
+#include "filemanager.h"
+
+using namespace std;
+
+// Constructor
+FileManager::FileManager(const string& booksFile, const string& usersFile)
+    : booksFileName(booksFile), usersFileName(usersFile) {
+        logsFileName = (filesystem::path(booksFile).parent_path()/"logs.log").string();
+    }
+
+// Save all library data
+bool FileManager::saveLibraryData(Library& library) {
+    return saveBooksToFile(library) && saveUsersToFile(library);
+}
+
+// Load all library data
+bool FileManager::loadLibraryData(Library& library) {
+    bool booksLoaded = loadBooksFromFile(library);
+    bool usersLoaded = loadUsersFromFile(library);
+    return booksLoaded || usersLoaded; // Return true if at least one file was loaded
+}
+
+// Save books to file
+bool FileManager::saveBooksToFile(Library& library) {
+    if (booksFileName.empty()){
+        cout << "Erreur : Aucun répertoire spécifique trouvé. Sauvegarde des livres ignorée.\n";
+        return false;
+    }
+
+    ofstream file(booksFileName);
+    if (!file.is_open()) {
+        cout << "Erreur : Impossible d'ouvrir " << booksFileName << " en écriture.\n";
+        return false;
+    }
+    
+    auto books = library.getAllBooks();
+    for (Book* book : books) {
+        file << book->toFileFormat() << "\n";
+    }
+    
+    file.close();
+    return true;
+}
+
+// Save users to file
+bool FileManager::saveUsersToFile(Library& library) {
+    if (usersFileName.empty()){
+        cout << "Erreur : Aucun répertoire spécifique trouvé. Sauvegarde des utilisateurs ignorée.\n";
+        return false;
+    }
+
+    ofstream file(usersFileName);
+    if (!file.is_open()) {
+        cout << "Erreur : Impossible d'ouvrir " << usersFileName << " en écriture.\n";
+        return false;
+    }
+    
+    auto users = library.getAllUsers();
+    for (User* user : users) {
+        file << user->toFileFormat() << "\n";
+    }
+    
+    file.close();
+    return true;
+}
+
+// Load books from file
+bool FileManager::loadBooksFromFile(Library& library) {
+    ifstream file(booksFileName);
+    if (!file.is_open()) {
+        cout << "Aucun fichier de livres existant trouvé. Démarrage avec une bibliothèque vide.\n";
+        return false;
+    }
+    
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        if (!line.empty()) {
+            Book book;
+            book.fromFileFormat(line);
+            library.addBook(book);
+            count++;
+        }
+    }
+    
+    file.close();
+    cout << "Chargé " << count << " livre(s) depuis le fichier.\n";
+    return true;
+}
+
+// Load users from file
+bool FileManager::loadUsersFromFile(Library& library) {
+    ifstream file(usersFileName);
+    if (!file.is_open()) {
+        cout << "Aucun fichier d'utilisateurs existant trouvé. Démarrage sans utilisateurs enregistrés.\n";
+        return false;
+    }
+    
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        if (!line.empty()) {
+            User user;
+            user.fromFileFormat(line);
+            library.addUser(user);
+            count++;
+        }
+    }
+    
+    file.close();
+    cout << "Chargé " << count << " utilisateur(s) depuis le fichier.\n";
+    return true;
+}
+
+// Check if file exists
+bool FileManager::fileExists(const string& filename) {
+    ifstream file(filename);
+    return file.good();
+}
+
+// Create backup
+void FileManager::createBackup() {
+    if (booksFileName.empty() || usersFileName.empty()){
+        cout << "Erreur : Chemin non-défini. Impossible de créer une sauvegarde.\n";
+    }
+
+    if (fileExists(booksFileName)) {
+        filesystem::copy_file(booksFileName, booksFileName + ".backup");
+    }
+    
+    if (fileExists(usersFileName)) {
+        filesystem::copy_file(usersFileName, usersFileName + ".backup");
+    }
+    
+    cout << "Fichiers de sauvegarde créés.\n";
+}
+
+// https://www.geeksforgeeks.org/cpp/logging-system-in-cpp/
+// https://github.com/Ahmed-Ibrahim-30/Logging-System
+// https://en.cppreference.com/cpp/chrono/c/localtime
+// https://en.cppreference.com/cpp/chrono/c/strftime
+// https://en.cppreference.com/cpp/chrono/c/time
+
+// Write logs for timestamp/action/details
+void FileManager::writeLog(string& action, string& details){
+    ofstream saveFile(logsFileName, ios::app);
+
+    if (saveFile.is_open()){
+        time_t now=time(nullptr);
+        char timeStamp[25];
+        strftime(timeStamp, sizeof(timeStamp), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+        saveFile << timeStamp << " - [" << action << "] " << details << endl;
+        saveFile.close();
+    } else {
+        cout << "Erreur : Impossible d'afficher le contenu " << logsFileName << "\n.";
+    }
+}
